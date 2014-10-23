@@ -1,0 +1,35 @@
+<head>
+  <title>Flock Squawk</title>
+</head>
+
+<body>
+  {{> home}}
+</body>
+
+<template name="home">
+  <h1>Welcome to {{app_name}}!</h1>
+  
+  <button class="btn btn-primary new-post">Start {{post_action}}</button>
+
+  <div class="container">
+    <div class="row">
+      {{#each root_posts}}
+        <div class="col-md-12">
+          <div class="well">
+          {{> post}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{> new_post}}
+</template>
+
+<template name="post">
+  TODO
+</template>
+
+<template name="new_post">
+  {{modal}}
+</template>
