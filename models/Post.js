@@ -39,11 +39,15 @@ var _$ = this;
   
   _$.Post.newPost = function (callback) {
     // Create a form for the user to fill out
-    HTTP.get('./views/SquawkPost.html.raw', function ( html ) {
+    Meteor.http.get( window.location.origin + '/views/SquawkPost.html', function ( _, obj ) {
+      var html = obj.content
+
       var data = {
         "html" : html,
-        "modalId" : "TODO"
+        "modalId" : "#squawk_post"
       }
-    })
+
+      callback( data )
+    } )
   }
 }();

@@ -9,9 +9,7 @@ function loadTemplate ( name ) {
   "use strict";
 
   if ('home' === name) {
-    var closure = {
-      newPost : ''
-    }
+
 
     Template.home.helpers( {
       app_name: function () {
@@ -24,19 +22,20 @@ function loadTemplate ( name ) {
         return Meteor.posts.find()
       },
       modal: function () {
-        return closure.newPost
+        return Session.get( "post_form" )
       }
     } )
 
     Template.home.events( {
       'click .new-post' : function () {
-        Session.set( "app_name", "test" )
+
         Post.newPost( function ( data ) {
-
-          closure.newPost = data.html
-
+          
+          Session.set( "post_form", data.html )
           $( data.modalId ).modal( 'show' )
-        } );
+
+        } )
+
       }
     } )
   }
@@ -54,6 +53,8 @@ function loadConfigurations () {
     Session.set( config, configuration[config] )
   }
 
+  Session.setDefault( "post_form" , "" )
+
   // Call Template Set Up
   loadTemplate( 'home' )
 }
@@ -67,6 +68,10 @@ if (Meteor.isClient) {
   loadConfigurations();
 }
 
+/**
+ * Server Boot
+ * ===========
+ */
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
