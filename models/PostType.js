@@ -14,4 +14,4 @@ var _$ = this;
   _$.PostType = {}
   _$.PostType.Root = 1
   _$.PostType.Child = 2
-}
+} ();

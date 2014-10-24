@@ -3,29 +3,47 @@
 </head>
 
 <body>
-  {{> home}}
+  {{> page}}
 </body>
 
-<template name="home">
-  <h1>Welcome to {{app_name}}!</h1>
-  
-  <button class="btn btn-primary new-post">Start {{post_action}}</button>
-
-  <div class="container">
-    <div class="row">
-      {{#each root_posts}}
-        <div class="col-md-12">
-          <div class="well">
-          {{> post}}
-          </div>
-        </div>
-      {{/each}}
-    </div>
+<template name="page">
+  <div id="main">
+    {{> home }}
+    {{> thread }}
   </div>
+</template>
 
-  {{{modal}}}
+<template name="home">
+  {{#if active}}
+    <h1>Welcome to {{app_name}}!</h1>
+    
+    {{#if logged_in}}
+      <button class="btn btn-primary new-post">Start {{post_action}}</button>
+    {{/if}}
+
+    <div class="container">
+      <div class="row">
+        <div id="squawk-load">Loading...</div>
+        {{#each root_posts}}
+          <div class="col-md-12 squawk-post-well" style="display:none">
+            <div class="well">
+            {{> post}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{{modal}}}
+  {{/if}}
+</template>
+
+<template name="thread">
+  {{#if active}}
+  {{/if}}
 </template>
 
 <template name="post">
-  TODO
+  <h3>{{name}}</h3>
+  <p>{{content}}</p>
 </template>

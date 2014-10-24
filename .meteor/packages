@@ -8,7 +8,7 @@ autopublish
 insecure
 accounts-ui
 accounts-twitter
-bootstrap
 jquery
 http
+mizzao:bootstrap-3
 
