@@ -25,6 +25,9 @@ function loadConfigurations () {
   Template.header.helpers( {
     app_name : function () {
       return Session.get( 'app_name' )
+    },
+    tag_line : function () {
+      return Session.get( 'tag_line' )
     }
   } )
 

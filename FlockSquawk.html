@@ -8,7 +8,9 @@
 
 <template name="page">
   <div id="main">
-    {{> header}}
+    <div class="container">
+      {{> header}}
+    </div>
 
     <div class="container">
       <div class="row">
@@ -27,6 +29,7 @@
 
 <template name="header">
   <h1>Welcome to {{app_name}}!</h1>
+  <h2>{{tag_line}}</h2>
 </template>
 
 <template name="sidebar">
@@ -63,7 +66,7 @@
 <template name="content">
   {{#if is_current_search "object"}}
     <h2>{{current_search_term}}</h2>
-    <div class="row">
+    <div class="row" id="result_content">
       {{#each current_search}}
       <!-- Twitter Badge -->
         <div class="twitter-badge col-md-6">

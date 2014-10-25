@@ -38,3 +38,23 @@
   margin-right: 0px;
   margin-bottom: 10px;
 }
+
+/* ==================================
+ * Bootstrap Masonry without Masonry
+ * http://www.bootply.com/120682
+ * ================================== */
+
+#result_content.row {
+ -moz-column-width: 18em;
+ -webkit-column-width: 18em;
+ -moz-column-gap: 1em;
+ -webkit-column-gap:1em; 
+  
+}
+
+#result_content.row > .col-md-6 {
+ display: inline-block;
+ padding:  .33rem;
+ width:  100%; 
+ float:none;
+}
