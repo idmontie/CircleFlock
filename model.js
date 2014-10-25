@@ -4,11 +4,12 @@
  * Shared between the client and server
  * ===================================== */
 
-Posts = new Meteor.Collection('posts')
+TwitterTokens = new Meteor.Collection( 'twitter_tokens' )
+TwitterTrends = new Meteor.Collection( 'twitter_trends' )
 
-if ( Meteor.isServer ) {
-  Meteor.publish('posts', function () {
-    // TODO make more restrictive
-    return Posts.find()
-  } )
-}
+
+
+
+
+
+
