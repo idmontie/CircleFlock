@@ -33,19 +33,19 @@
   <div class="well">
     <form>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="#hashtag">
+        <input id="searcher" type="text" class="form-control" placeholder="#hashtag">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+          <button id="searcher-go" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
         </span>
       </div><!-- /input-group -->
     </form>
   </div>
   <div class="well">
-    <h2>Popular Right Now</h2>
+    <h2>Popular on Twitter</h2>
 
-    <ul>
+    <ul id="popular_list">
       {{#each popular_searches}}
-        <li>{{name}}</li>
+        <li><a href="#">{{name}}</a></li>
       {{/each}}
     </ul>
   </div>
@@ -57,5 +57,13 @@
 
 
 <template name="content">
-  No content yet
+  {{#if is_current_search "object"}}
+    <ul>
+      {{#each current_search}}
+        <li>{{user}} - {{count}}</li>
+      {{/each}}
+    </ul>
+  {{else}}
+    {{current_search}}
+  {{/if}}
 </template>

@@ -4,11 +4,9 @@
 # but you can also edit it by hand.
 
 meteor-platform
-autopublish
 insecure
 accounts-ui
 accounts-twitter
 jquery
 http
 mizzao:bootstrap-3
-
