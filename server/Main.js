@@ -8,7 +8,7 @@ _$.Twitter = {
   urls : {
     auth : 'https://api.twitter.com/oauth2/token',
     trends : 'https://api.twitter.com/1.1/trends/place.json?id=1',
-    search : 'https://api.twitter.com/1.1/search/tweets.json?count=100&q='
+    search : 'https://api.twitter.com/1.1/search/tweets.json?count=1000&q='
   }
 }
 
@@ -72,6 +72,12 @@ Meteor.startup(function () {
 
   Meteor.methods( {
     search : function ( searchTerm ) {
+      // TODO unique
+      Searches.insert ( {
+        search : searchTerm,
+        date_created : Date.now()
+      }, function () { /* force async */ } )
+
       var search = _$.Twitter.urls.search + encodeURIComponent ( searchTerm )
 
       var bearer = getBearer ()
@@ -98,17 +104,17 @@ Meteor.startup(function () {
           var username = status.user.name
 
           // TODO only insert if new
-          // TODO do this in a seperate "thread"
           TwitterUsers.insert ( status.user, function () { /* force async */ } )
           
           if ( counts[username] !== undefined ) {
-            counts[username]++
+            counts[username].count++
           } else {
-            counts[username] = 1
+            counts[username] = {
+              count : 1,
+              user : status.user
+            }
           }
         } )
-
-        // TODO Sort tallies
 
         // Transform counts into an array
         topUsers = []
@@ -116,11 +122,24 @@ Meteor.startup(function () {
         for ( var prop in counts ) {
           if ( counts.hasOwnProperty(prop) ) {
             topUsers.push( {
-              user : prop,
-              count :  counts[prop]
+              user : counts[prop].user,
+              count :  counts[prop].count
             } )
           }
         }
+
+        // TODO Sort tallies
+        function tallyCompare ( a, b ) {
+          if (a.count < b.count)
+             return 1;
+          if (a.count > b.count)
+            return -1;
+          return 0;
+        }
+
+        topUsers.sort ( tallyCompare )
+
+        topUsers = topUsers.splice( 0, 10 )
 
         // Return
         return topUsers

@@ -9,6 +9,8 @@ TwitterTrends = new Meteor.Collection( 'twitter_trends' )
 TwitterTweets = new Meteor.Collection( 'twitter_tweets' )
 TwitterUsers = new Meteor.Collection( 'twitter_users' )
 
+Searches = new Meteor.Collection( 'searches' )
+
 Logger = new Meteor.Collection( 'log' )
 
 
@@ -57,7 +59,25 @@ if (Meteor.isServer) {
       } 
     }, { 
       sort : {
-        date_created : 1
+        date_created : -1
+      },
+      limit : 10 } )
+    });
+
+  // Limit Trend exposure
+  Searches.allow ( {
+    insert : function () { return true },
+    update : function () { return true },
+    remove : function () { return true }
+  } )
+  Meteor.publish("searches", function () {
+    return Searches.find( { 
+      date_created : { 
+        $exists : true 
+      } 
+    }, { 
+      sort : {
+        date_created : -1
       },
       limit : 10 } )
     });

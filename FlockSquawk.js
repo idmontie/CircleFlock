@@ -10,10 +10,12 @@ function loadConfigurations () {
     Session.set( config, configuration[config] )
   }
 
-  Session.get( 'current_search', '' )
+  Session.setDefault( 'current_search', '' )
+  Session.setDefault( 'current_search_term', '' ) 
 
   Tracker.autorun(function () {
     Meteor.subscribe("twitter_trends");
+    Meteor.subscribe("searches");
   });
 
   Template.page.helpers( {
@@ -34,7 +36,18 @@ function loadConfigurations () {
         } 
       }, { 
         sort : {
-          date_created : 1
+          date_created : -1
+        },
+        limit : 10 } )
+    },
+    recent_searches : function () {
+      return Searches.find( { 
+        date_created : { 
+          $exists : true 
+        } 
+      }, { 
+        sort : {
+          date_created : -1
         },
         limit : 10 } )
     }
@@ -46,22 +59,32 @@ function loadConfigurations () {
     },
     is_current_search : function ( type ) {
       return typeof Session.get( 'current_search' ) === type
+    },
+    current_search_term : function () {
+      return Session.get( 'current_search_term' )
+    },
+    count_output : function ( counts ) {
+      if (counts == 1) {
+        return counts + " Tweet"
+      } else {
+        return counts + " Tweets"
+      }
     }
   } )
 
   Template.sidebar.events( {
-    'click #popular_list a' : function ( event ) {
+    // TODO Enter should also work
+    'click #popular_list a, click #recent_list a' : function ( event ) {
       var search = $( event.target ).text()
       $( '#searcher' ).val( search )
       $( '#searcher-go' ).click()
     },
     'click #searcher-go' : function ( event ) {
+      Session.set( 'current_search_term', $( '#searcher' ).val() )
       Session.set( 'current_search', 'Loading...' )
-      Session.set( 'current_search_loaded', false )
       
       Meteor.call ( 'search', $( '#searcher' ).val(), function ( error, response ) {
         Session.set( 'current_search', response )
-        Session.set( 'current_search_loaded', true )
       } )
     }
   } )

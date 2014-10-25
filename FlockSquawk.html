@@ -12,10 +12,10 @@
 
     <div class="container">
       <div class="row">
-        <div id="sidebar" class="col-md-4 col-sm-12">
+        <div id="sidebar" class="col-sm-4 col-sm-12">
           {{> sidebar}}
         </div>
-        <div id="content" class="col-md-8 col-sm-12">
+        <div id="content" class="col-sm-8 col-sm-12">
           {{> content}}
         </div>
       </div>
@@ -40,7 +40,7 @@
       </div><!-- /input-group -->
     </form>
   </div>
-  <div class="well">
+  <div class="well hidden-xs">
     <h2>Popular on Twitter</h2>
 
     <ul id="popular_list">
@@ -49,20 +49,54 @@
       {{/each}}
     </ul>
   </div>
-  <div class="well">
+  <div class="well hidden-xs">
     <h2>Recent Searches</h2>
-    {{recent_searches}}
+    <ul id="recent_list">
+      {{#each recent_searches}}
+        <li><a href="#">{{search}}</a></li>
+      {{/each}}
+    </ul>
   </div>
 </template>
 
 
 <template name="content">
   {{#if is_current_search "object"}}
-    <ul>
+    <h2>{{current_search_term}}</h2>
+    <div class="row">
       {{#each current_search}}
-        <li>{{user}} - {{count}}</li>
+      <!-- Twitter Badge -->
+        <div class="twitter-badge col-md-6">
+
+          <div class="well" style="background-color: #{{user.profile_background_color}}; background-image: url({{user.profile_banner_url}})">
+          
+            <div class="content">
+              <div class="row">
+                <div class="avatar col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+                  <img src="{{user.profile_image_url_https}}" class="img-responsive" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <h3>{{count_output count}}</h3>
+                </div>
+                <div class="col-md-6">
+                  <h3>{{user.name}}</h3>
+                </div>
+              </div>
+              <a href="https://twitter.com/{{user.screen_name}}" class="twitter-follow-button" data-show-count="false">Follow @{{user.screen_name}}</a>
+              <div class="clearfix"></div>
+              <br/>
+            </div>
+          </div>
+        </div>
+        
+      <!-- Twitter Badge -->
       {{/each}}
-    </ul>
+
+      <!-- Force reload of Twitter Badges -->
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div><!--/row-->
   {{else}}
     {{current_search}}
   {{/if}}
