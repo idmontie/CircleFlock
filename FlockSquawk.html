@@ -8,42 +8,54 @@
 
 <template name="page">
   <div id="main">
-    {{> home }}
-    {{> thread }}
-  </div>
-</template>
-
-<template name="home">
-  {{#if active}}
-    <h1>Welcome to {{app_name}}!</h1>
-    
-    {{#if logged_in}}
-      <button class="btn btn-primary new-post">Start {{post_action}}</button>
-    {{/if}}
+    {{> header}}
 
     <div class="container">
       <div class="row">
-        <div id="squawk-load">Loading...</div>
-        {{#each root_posts}}
-          <div class="col-md-12 squawk-post-well" style="display:none">
-            <div class="well">
-            {{> post}}
-            </div>
-          </div>
-        {{/each}}
+        <div id="sidebar" class="col-md-4 col-sm-12">
+          {{> sidebar}}
+        </div>
+        <div id="content" class="col-md-8 col-sm-12">
+          {{> content}}
+        </div>
       </div>
     </div>
-
-    {{{modal}}}
-  {{/if}}
+  </div>
 </template>
 
-<template name="thread">
-  {{#if active}}
-  {{/if}}
+
+
+<template name="header">
+  <h1>Welcome to {{app_name}}!</h1>
 </template>
 
-<template name="post">
-  <h3>{{name}}</h3>
-  <p>{{content}}</p>
+<template name="sidebar">
+  <div class="well">
+    <form>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="#hashtag">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
+      </div><!-- /input-group -->
+    </form>
+  </div>
+  <div class="well">
+    <h2>Popular Right Now</h2>
+
+    <ul>
+      {{#each popular_searches}}
+        <li>{{title}}</li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="well">
+    <h2>Recent Searches</h2>
+    {{recent_searches}}
+  </div>
+</template>
+
+
+<template name="content">
+  No content yet
 </template>
