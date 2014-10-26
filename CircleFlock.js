@@ -22,6 +22,8 @@ function loadConfigurations () {
 
   } )
 
+  // Header
+  // ======
   Template.header.helpers( {
     app_name : function () {
       return Session.get( 'app_name' )
@@ -31,6 +33,25 @@ function loadConfigurations () {
     }
   } )
 
+  Template.header.events( {
+    'click #searcher-go' : function ( event ) {
+      var search = $( '#searcher' ).val()
+
+      loadSearch ( search )
+
+      return false
+    },
+    'submit #search-form' : function ( event ) {
+      var search = $( '#searcher' ).val()
+
+      loadSearch ( search )
+
+      return false
+    }
+  } )
+
+  // Sidebar
+  // ======
   Template.sidebar.helpers( {
     popular_searches : function () {
       return TwitterTrends.find( { 
@@ -56,6 +77,19 @@ function loadConfigurations () {
     }
   } )
 
+  Template.sidebar.events( {
+    'click #popular_list a, click #recent_list a' : function ( event ) {
+      var search = $( event.target ).text()
+      $( '#searcher' ).val( search )
+
+      loadSearch ( search )
+
+      return false
+    }
+  } )
+
+  // Content
+  // ======
   Template.content.helpers( {
     current_search : function () {
       return Session.get( 'current_search' )
@@ -92,30 +126,7 @@ function loadConfigurations () {
   } )
 
 
-  Template.sidebar.events( {
-    'click #popular_list a, click #recent_list a' : function ( event ) {
-      var search = $( event.target ).text()
-      $( '#searcher' ).val( search )
-
-      loadSearch ( search )
-
-      return false
-    },
-    'click #searcher-go' : function ( event ) {
-      var search = $( '#searcher' ).val()
-
-      loadSearch ( search )
-
-      return false
-    },
-    'submit #search-form' : function ( event ) {
-      var search = $( '#searcher' ).val()
-
-      loadSearch ( search )
-
-      return false
-    }
-  } )
+  
 }
 
 function loadSearch ( search ) {

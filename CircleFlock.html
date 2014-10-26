@@ -35,9 +35,7 @@
 <template name="page">
   <div id="main">
     <header>
-      <div class="container">
-        {{> header}}
-      </div>
+      {{> header}}
     </header>
 
     <div class="container">
@@ -60,13 +58,11 @@
 
 
 <template name="header">
-  <img src="img/circle_flock.png" />
-  <h1><a href="/">{{app_name}}</a></h1>
-  <h2 class="hidden-xs">{{tag_line}}</h2>
-</template>
+  <div class="container">
+    <a href="/"><img src="img/circle_flock.png" /></a>
+    <h1><a href="/">{{app_name}}</a></h1>
+    <h2 class="hidden-xs">{{tag_line}}</h2>
 
-<template name="sidebar">
-  <div class="well">
     <form id="search-form">
       <div class="input-group">
         <input id="searcher" type="text" class="form-control" placeholder="#hashtag or keywords">
@@ -76,6 +72,10 @@
       </div><!-- /input-group -->
     </form>
   </div>
+</template>
+
+<template name="sidebar">
+
   <div class="well hidden-xs">
     <h2>Popular on Twitter</h2>
 
