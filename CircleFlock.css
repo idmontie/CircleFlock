@@ -77,6 +77,10 @@ body {
   box-shadow: none;
 }
 
+#jumbo-search-form {
+  margin-top: 40px;
+}
+
 #jumbo-searcher {
   background-color: transparent;
   border: none;
