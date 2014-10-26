@@ -69,6 +69,15 @@ body {
   margin-top: 0px;
 }
 
+.twitter-badge .well h3 a,
+.twitter-badge .well h3 a:hover,
+.twitter-badge .well h3 a:focus,
+.twitter-badge .well h3 a:active,
+.twitter-badge .well h3 a:visited {
+  color: white;
+  text-decoration: none;
+}
+
 .twitter-badge .well .avatar {
   background: #fff;
   border: 5px solid #fff;

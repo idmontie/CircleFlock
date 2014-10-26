@@ -72,6 +72,11 @@ Meteor.startup(function () {
 
   Meteor.methods( {
     search : function ( searchTerm ) {
+      if ( searchTerm == null ||
+           searchTerm.trim() === '' ) {
+        return "Please search for something."
+      }
+
       // TODO unique
       Searches.insert ( {
         search : searchTerm,
@@ -118,6 +123,7 @@ Meteor.startup(function () {
 
         // Transform counts into an array
         topUsers = []
+        topCount = -1
 
         for ( var prop in counts ) {
           if ( counts.hasOwnProperty(prop) ) {
@@ -125,8 +131,11 @@ Meteor.startup(function () {
               user : counts[prop].user,
               count :  counts[prop].count
             } )
+
+            topCount = Math.max( topCount, counts[prop].count )
           }
         }
+
 
         // TODO Sort tallies
         function tallyCompare ( a, b ) {
@@ -138,6 +147,13 @@ Meteor.startup(function () {
         }
 
         topUsers.sort ( tallyCompare )
+
+        // Throw out 1's unless they are all 1's
+        if ( topCount > 1 ) {
+          topUsers = topUsers.filter( function (u) {
+            return u.count > 1
+          } )
+        }
 
         topUsers = topUsers.splice( 0, 10 )
 

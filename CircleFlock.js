@@ -75,29 +75,44 @@ function loadConfigurations () {
     }
   } )
 
+  Template.content.rendered = function () {
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}
+    }(document, 'script', 'twitter-wjs');
+  }
+
   Template.sidebar.events( {
     'click #popular_list a, click #recent_list a' : function ( event ) {
       var search = $( event.target ).text()
       $( '#searcher' ).val( search )
-      $( '#searcher-go' ).click()
+
+      loadSearch ( search )
     },
     'click #searcher-go' : function ( event ) {
       var search = $( '#searcher' ).val()
 
-      // Hashbang it
-      window.location.hash = '!/' + encodeURIComponent ( search )
-
-      Session.set( 'current_search_term',  )
-      Session.set( 'current_search', 'Loading...' )
-      
-      Meteor.call ( 'search', $( '#searcher' ).val(), function ( error, response ) {
-        Session.set( 'current_search', response )
-      } )
+      loadSearch ( search )
     },
     'submit #search-form' : function ( event ) {
-      $( '#searcher-go' ).click()
+      var search = $( '#searcher' ).val()
+
+      loadSearch ( search )
+
       return false;
     }
+  } )
+}
+
+function loadSearch ( search ) {
+
+  // Hashbang it
+  window.location.hash = '!/' + encodeURIComponent ( search )
+
+  Session.set( 'current_search_term',  search )
+  Session.set( 'current_search', 'Loading...' )
+  
+  Meteor.call ( 'search', $( '#searcher' ).val(), function ( error, response ) {
+    Session.set( 'current_search', response )
   } )
 }
 
@@ -108,4 +123,19 @@ function loadConfigurations () {
 if (Meteor.isClient) {
   // Load in data
   loadConfigurations();
+
+  // Load initial search
+  var hashbangSearch = (window.location.hash !== "" ? window.location.hash : false);
+  
+  if (hashbangSearch !== false) {
+    hashbangSearch = hashbangSearch.replace('#', '')
+    hashbangSearch = hashbangSearch.replace('!/', '')
+
+    hashbangSearch = decodeURIComponent ( hashbangSearch )
+
+    $( '#searcher' ).val( hashbangSearch )
+
+    loadSearch( hashbangSearch );
+  }
+
 }
