@@ -9,6 +9,7 @@ var _$ = this
 // 20 requests a minute
 var REQUEST_LIMIT = 20
 var FLOOD_TIME = 1000 * 60
+var NUMBER_OF_TWEETS = 100
 
 /**
  * 100 Tweet limit
@@ -157,7 +158,7 @@ Meteor.startup(function () {
       var bearer = getBearer ()
 
       try {
-        var statuses = getStatuses( bearer, search, 1 )
+        var statuses = getStatuses( bearer, search, NUMBER_OF_TWEETS )
         var counts = {};
 
         // Tally and insert into the database
@@ -260,5 +261,5 @@ Meteor.startup(function () {
 
   // Boot up reoccuring pull
   whatsTrending ()
-  Meteor.setInterval (whatsTrending, 1000 * 60 * 5 /* 5 minute */ )
+  Meteor.setInterval (whatsTrending, 1000 * 60 /* 1 minute */ )
 } )
