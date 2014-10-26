@@ -82,6 +82,9 @@ function loadConfigurations () {
         }(document, 'script', 'twitter-wjs');
       } )
       return [] || Session.get ( 'curent_search' )
+    },
+    get_large_image : function ( url ) {
+      return url.replace( 'normal', '400x400' )
     }
   } )
 

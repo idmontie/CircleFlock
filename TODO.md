@@ -1,0 +1,6 @@
+- throttling
+- motifs
+  - what does each user tweet about
+  - record what users tweet about
+  - predict what users will tweet about
+- word network

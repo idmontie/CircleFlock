@@ -6,6 +6,10 @@
 
 var _$ = this
 
+// 20 requests a minute
+var REQUEST_LIMIT = 20
+var FLOOD_TIME = 1000 * 60
+
 /**
  * 100 Tweet limit
  */
@@ -124,14 +128,25 @@ function getBearer () {
  */
 Meteor.startup(function () {
   // code to run on server at startup
+  _$.requestBuffer = new CBuffer( REQUEST_LIMIT )
 
   Meteor.methods( {
     search : function ( searchTerm ) {
+      // Terminate early
       if ( searchTerm == null ||
            searchTerm.trim() === '' ) {
         return "Please search for something."
       }
-      
+
+      // (Throttle) Delay due to too many requests
+      if ( _$.requestBuffer.isFull() &&
+           Date.now() - _$.requestBuffer.first() < FLOOD_TIME ) {
+        return "We are over capacity, try again in a bit."
+      } else {
+        _$.requestBuffer.push( Date.now() )
+      }
+
+
       Searches.upsert ( { search : searchTerm }, { $set : {
         search : searchTerm,
         date_created : Date.now()

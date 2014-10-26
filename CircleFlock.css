@@ -16,10 +16,13 @@ header h1 {
   line-height: 1;
   font-weight: 900;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  vertical-align: top;
 }
 
 header h2 {
   font-size: 1em;
+  margin:0px 0px 10px 0px;
 }
 
 header h1 a,
@@ -29,6 +32,12 @@ header h1 a:active,
 header h1 a:visited {
   color: white;
   text-decoration: none;
+}
+
+header img {
+  display: inline-block;
+  height: 64px;
+  margin: 7px;
 }
 
 body {
@@ -42,9 +51,19 @@ body {
   border-radius: 50%;
   width: 27px;
   height: 27px;
-  border: 1px solid #3B8C4E;
   text-align: center;
   display: inline-block;
+  background: #e21414;
+  background: -moz-linear-gradient(top, #e21414 0%, #b50f0f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e21414), color-stop(100%,#b50f0f));
+  background: -webkit-linear-gradient(top, #e21414 0%,#b50f0f 100%);
+  background: -o-linear-gradient(top, #e21414 0%,#b50f0f 100%);
+  background: -ms-linear-gradient(top, #e21414 0%,#b50f0f 100%);
+  background: linear-gradient(to bottom, #e21414 0%,#b50f0f 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e21414', endColorstr='#b50f0f',GradientType=0 );
+  color: white;
+  box-shadow: 0px 0px 1px #e21414;
+  font-weight: bold;
 }
 
 /* ==================================
