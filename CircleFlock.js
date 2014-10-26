@@ -72,14 +72,19 @@ function loadConfigurations () {
       } else {
         return " Tweets"
       }
+    },
+    rendered : function () {
+      Meteor.defer( function () {
+        // Force Twitter buttons that were
+        // added to the dom to render
+        !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);
+        }(document, 'script', 'twitter-wjs');
+      } )
+      return [] || Session.get ( 'curent_search' )
     }
   } )
 
-  Template.content.rendered = function () {
-    !function(d,s,id){
-      var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}
-    }(document, 'script', 'twitter-wjs');
-  }
 
   Template.sidebar.events( {
     'click #popular_list a, click #recent_list a' : function ( event ) {
@@ -111,7 +116,7 @@ function loadSearch ( search ) {
   Session.set( 'current_search_term',  search )
   Session.set( 'current_search', 'Loading...' )
   
-  Meteor.call ( 'search', $( '#searcher' ).val(), function ( error, response ) {
+  Meteor.call ( 'search', search, function ( error, response ) {
     Session.set( 'current_search', response )
   } )
 }

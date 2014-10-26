@@ -1,17 +1,67 @@
-// ====
-// Main
-// ====
+/**
+ * ===========================================
+ * Main
+ * ===========================================
+ */
 
 var _$ = this
 
+/**
+ * 100 Tweet limit
+ */
 _$.Twitter = {
   urls : {
     auth : 'https://api.twitter.com/oauth2/token',
     trends : 'https://api.twitter.com/1.1/trends/place.json?id=1',
-    search : 'https://api.twitter.com/1.1/search/tweets.json?count=1000&q='
+    search : 'https://api.twitter.com/1.1/search/tweets.json?result_type=recent&count=100&q='
   }
 }
 
+/** 
+ * ===========================================
+ * Get Statuses
+ * ===========================================
+ */
+function getStatuses ( bearer, search, limit ) {
+  var result = HTTP.call(
+    'GET',
+    search,
+    {
+      'headers' : {
+        'Authorization' : 'Bearer ' + bearer.access_token
+      }
+    } )
+
+  var statuses = JSON.parse( result.content ).statuses
+
+  // TODO this does not work yet
+
+  /*while ( statuses.length < limit ) {
+    var result = HTTP.call(
+      'GET',
+      search + "&max_id=" + statuses[statuses.length - 1].id,
+      {
+        'headers' : {
+          'Authorization' : 'Bearer ' + bearer.access_token
+        }
+      } )
+
+    var s = JSON.parse( result.content ).statuses
+
+    statuses = statuses.concat( s )
+  }*/
+
+  return statuses
+
+}
+
+/**
+ * ===========================================
+ * Trending
+ *
+ * Get whatever is trending from Twitter
+ * ===========================================
+ */
 function whatsTrending () {
   console.log ( 'Finding what is trending' )
 
@@ -39,8 +89,13 @@ function whatsTrending () {
         for ( var index in trends[0].trends ) {
           var insert = trends[0].trends[index]
           insert.date_created = Date.now()
-          // TODO only insert if new
-          TwitterTrends.insert( insert )
+          TwitterTrends.upsert( { name : insert.name }, { $set : {
+            name : insert.name,
+            query : insert.query,
+            url : insert.url,
+            date_created : Date.now() 
+          } } )
+        
 
         }
 
@@ -76,29 +131,18 @@ Meteor.startup(function () {
            searchTerm.trim() === '' ) {
         return "Please search for something."
       }
-
-      // TODO unique
-      Searches.insert ( {
+      
+      Searches.upsert ( { search : searchTerm }, { $set : {
         search : searchTerm,
         date_created : Date.now()
-      }, function () { /* force async */ } )
+      } }, function () { /* force async */ } )
 
-      var search = _$.Twitter.urls.search + encodeURIComponent ( searchTerm )
+      var search = _$.Twitter.urls.search + encodeURIComponent ( '"' + searchTerm + '"' )
 
       var bearer = getBearer ()
 
       try {
-        var result = HTTP.call(
-          'GET',
-          search,
-          {
-            'headers' : {
-              'Authorization' : 'Bearer ' + bearer.access_token
-            }
-          } )
-
-        var statuses = JSON.parse( result.content ).statuses
-
+        var statuses = getStatuses( bearer, search, 1 )
         var counts = {};
 
         // Tally and insert into the database
@@ -137,7 +181,7 @@ Meteor.startup(function () {
         }
 
 
-        // TODO Sort tallies
+        // Sort tallies
         function tallyCompare ( a, b ) {
           if (a.count < b.count)
              return 1;
@@ -155,12 +199,13 @@ Meteor.startup(function () {
           } )
         }
 
-        topUsers = topUsers.splice( 0, 10 )
+        topUsers = topUsers.splice( 0, 30 )
 
         // Return
         return topUsers
 
       } catch ( error ) {
+        console.log ( error )
         Logger.insert ( {
           error : error
         } )
