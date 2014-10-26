@@ -261,5 +261,5 @@ Meteor.startup(function () {
 
   // Boot up reoccuring pull
   whatsTrending ()
-  Meteor.setInterval (whatsTrending, 1000 * 60 /* 1 minute */ )
+  Meteor.setInterval (whatsTrending, 1000 * 60 * 15 /* 15 minutes */ )
 } )

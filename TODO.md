@@ -8,4 +8,5 @@
 - use my location
 - aggregated news
 - long twitter tags overflow
-- ajax loading icon
+- logins
+  - add this keyword to my interests

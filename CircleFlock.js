@@ -93,6 +93,9 @@ function loadConfigurations () {
     is_current_search_empty : function ( ) {
       return Session.get( 'current_search' ) === ''
     },
+    is_loading : function ( ) {
+      return Session.get( 'current_search' ) === 'Loading...'
+    },
     current_search_term : function () {
       return Session.get( 'current_search_term' )
     },

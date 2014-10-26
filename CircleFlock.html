@@ -148,6 +148,7 @@
     </div><!--/row-->
   {{else}}
     {{#if is_current_search_empty}}
+      <!-- Welcome -->
       <div class="jumbotron">
         <h1>Get Searching</h1>
         <p class="lead">Stay in tune with who to follow by searching with keywords that suit your interests</p>
@@ -162,7 +163,15 @@
         </form>
       </div>
     {{else}}
-      {{current_search}}
+      {{#if is_loading}}
+        <!-- Loading -->
+        <div class="spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+      {{else}}
+        {{current_search}}
+      {{/if}}
     {{/if}}
   {{/if}}
 </template>
