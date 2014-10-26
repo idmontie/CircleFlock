@@ -34,14 +34,7 @@ function loadConfigurations () {
   } )
 
   Template.header.events( {
-    'click #searcher-go' : function ( event ) {
-      var search = $( '#searcher' ).val()
-
-      loadSearch ( search )
-
-      return false
-    },
-    'submit #search-form' : function ( event ) {
+    'click #searcher-go, submit #search-form' : function ( event ) {
       var search = $( '#searcher' ).val()
 
       loadSearch ( search )
@@ -125,7 +118,16 @@ function loadConfigurations () {
     }
   } )
 
+  Template.content.events( {
+    'click #jumbo-searcher-go, submit #jumbo-search-form' : function ( event ) {
+      var search = $( '#jumbo-searcher' ).val()
+      $( '#searcher' ).val( search )
 
+      loadSearch ( search )
+
+      return false
+    }
+  } )
   
 }
 

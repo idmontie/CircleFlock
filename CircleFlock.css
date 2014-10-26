@@ -45,11 +45,6 @@ body {
   background-image: url(img/crossword.png);
 }
 
-button#searcher-go {
-  background: #e21414;
-  color: white;
-}
-
 .jumbotron {
   text-align: center;
   background-color: transparent;
@@ -76,10 +71,22 @@ button#searcher-go {
   box-shadow: none;
 }
 
-#searcher-go {
+#jumbo-searcher {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+
+button#searcher-go,
+button#jumbo-searcher-go {
+  background: #e21414;
+  color: white;
+  padding: 6px 30px;
   border: 0px;
   border-radius: 0px;
-  padding: 6px 30px;
 }
 
 /* ==================================

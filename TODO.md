@@ -5,7 +5,7 @@
 - word network
 - connect with other social networks
   - instagram
-
 - use my location
-
 - aggregated news
+- long twitter tags overflow
+- ajax loading icon
