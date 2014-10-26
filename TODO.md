@@ -7,6 +7,5 @@
   - instagram
 - use my location
 - aggregated news
-- long twitter tags overflow
 - logins
   - add this keyword to my interests

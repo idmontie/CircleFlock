@@ -96,6 +96,14 @@ button#jumbo-searcher-go {
 }
 
 /* ==================================
+ * Sidebar
+ * ================================== */
+#popular_list,
+#recent_list {
+  overflow: hidden;  
+}
+
+/* ==================================
  * Circles
  * ================================== */
 .numberCircle {
