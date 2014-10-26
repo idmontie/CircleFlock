@@ -68,27 +68,35 @@ function loadConfigurations () {
     },
     count_output : function ( counts ) {
       if (counts == 1) {
-        return counts + " Tweet"
+        return " Tweet"
       } else {
-        return counts + " Tweets"
+        return " Tweets"
       }
     }
   } )
 
   Template.sidebar.events( {
-    // TODO Enter should also work
     'click #popular_list a, click #recent_list a' : function ( event ) {
       var search = $( event.target ).text()
       $( '#searcher' ).val( search )
       $( '#searcher-go' ).click()
     },
     'click #searcher-go' : function ( event ) {
-      Session.set( 'current_search_term', $( '#searcher' ).val() )
+      var search = $( '#searcher' ).val()
+
+      // Hashbang it
+      window.location.hash = '!/' + encodeURIComponent ( search )
+
+      Session.set( 'current_search_term',  )
       Session.set( 'current_search', 'Loading...' )
       
       Meteor.call ( 'search', $( '#searcher' ).val(), function ( error, response ) {
         Session.set( 'current_search', response )
       } )
+    },
+    'submit #search-form' : function ( event ) {
+      $( '#searcher-go' ).click()
+      return false;
     }
   } )
 }

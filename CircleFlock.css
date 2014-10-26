@@ -1,4 +1,55 @@
-/* CSS declarations go here */
+/* ==================================
+ * Theme
+ * ================================== */
+
+header {
+  background-image: url(img/header_lodyas.png);
+  background-size: 25%;
+  color: white;
+  margin-bottom: 10px;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+header h1 {
+  color: white;
+  line-height: 1;
+  font-weight: 900;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+header h2 {
+  font-size: 1em;
+}
+
+header h1 a,
+header h1 a:hover,
+header h1 a:focus,
+header h1 a:active,
+header h1 a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+body {
+  background-image: url(img/crossword.png);
+}
+
+/* ==================================
+ * Circles
+ * ================================== */
+.numberCircle {
+  border-radius: 50%;
+  width: 27px;
+  height: 27px;
+  border: 1px solid #3B8C4E;
+  text-align: center;
+  display: inline-block;
+}
+
+/* ==================================
+ * Twitter Badges
+ * ================================== */
 .twitter-badge .well {
   background-size: cover;
   text-align: center;
