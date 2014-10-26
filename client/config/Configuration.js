@@ -7,7 +7,7 @@
   
   window.configuration = {
     "app_name" : "Circle Flock",
-    "tag_line" : "Find users who tweet your interests",
+    "tag_line" : "Find users who share your interests",
     "creator" : "Ivan Montiel",
     "post_action" : "Squawking"
   }

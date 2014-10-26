@@ -63,6 +63,9 @@ function loadConfigurations () {
     is_current_search : function ( type ) {
       return typeof Session.get( 'current_search' ) === type
     },
+    is_current_search_empty : function ( ) {
+      return Session.get( 'current_search' ) === ''
+    },
     current_search_term : function () {
       return Session.get( 'current_search_term' )
     },
@@ -95,18 +98,22 @@ function loadConfigurations () {
       $( '#searcher' ).val( search )
 
       loadSearch ( search )
+
+      return false
     },
     'click #searcher-go' : function ( event ) {
       var search = $( '#searcher' ).val()
 
       loadSearch ( search )
+
+      return false
     },
     'submit #search-form' : function ( event ) {
       var search = $( '#searcher' ).val()
 
       loadSearch ( search )
 
-      return false;
+      return false
     }
   } )
 }
@@ -115,6 +122,8 @@ function loadSearch ( search ) {
 
   // Hashbang it
   window.location.hash = '!/' + encodeURIComponent ( search )
+
+  document.title = "Circle Flock | " + search
 
   Session.set( 'current_search_term',  search )
   Session.set( 'current_search', 'Loading...' )

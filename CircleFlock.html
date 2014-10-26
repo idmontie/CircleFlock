@@ -51,6 +51,10 @@
       </div>
     </div>
   </div>
+
+  <div class="footer container">
+    <p>&copy; Circle Flock 2014</p>
+  </div>
 </template>
 
 
@@ -65,7 +69,7 @@
   <div class="well">
     <form id="search-form">
       <div class="input-group">
-        <input id="searcher" type="text" class="form-control" placeholder="#hashtag">
+        <input id="searcher" type="text" class="form-control" placeholder="#hashtag or keywords">
         <span class="input-group-btn">
           <button id="searcher-go" class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
         </span>
@@ -143,6 +147,14 @@
       
     </div><!--/row-->
   {{else}}
-    {{current_search}}
+    {{#if is_current_search_empty}}
+      <div class="jumbotron">
+        <h1>Get Searching</h1>
+        <p class="lead">Stay in tune with who to follow by searching with keywords that suit your interests</p>
+        
+      </div>
+    {{else}}
+      {{current_search}}
+    {{/if}}
   {{/if}}
 </template>

@@ -7,3 +7,5 @@
   - instagram
 
 - use my location
+
+- aggregated news
