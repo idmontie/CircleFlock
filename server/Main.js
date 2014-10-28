@@ -6,6 +6,17 @@
  * statuses.
  * ===========================================
  */
+/* global Meteor */
+/* global HTTP */
+/* global Assets */
+/* global TwitterTokens */
+/* global TwitterTweets */
+/* global TwitterUsers */
+/* global Logger */
+/* global Searches */
+/* global _ */
+/* global Base64 */
+/* global CBuffer */
 
 var _$ = this
 
@@ -32,6 +43,8 @@ _$.Twitter = {
  * @return statuses Array
  */
 function getStatuses ( bearer, search, limit ) {
+  'use strict';
+
   if ( typeof limit === "undefined" ) {
     limit = 100
   }
@@ -75,12 +88,14 @@ function getStatuses ( bearer, search, limit ) {
  * Get Twitter Credentials and put them in the database
  */
 function credentials () {
+  'use strict';
+
   var textBlob = Assets.getText( 'ConfigurationTwitter.json' )
   var twitterConfig = JSON.parse( textBlob )
 
-  var credentials = twitterConfig.consumerKey + ":" + twitterConfig.consumerSecret
+  var creds = twitterConfig.consumerKey + ":" + twitterConfig.consumerSecret
 
-  var base64Creds = Base64.encode( credentials )
+  var base64Creds = Base64.encode( creds )
 
   var bearer = HTTP.call(
     'POST', 
@@ -109,6 +124,8 @@ function credentials () {
  * @return bearer Object
  */
 function getBearer () {
+  'use strict';
+
   return TwitterTokens.findOne( { 
     date_created : { 
       $exists : true 
@@ -129,7 +146,7 @@ function getBearer () {
  * On success, the trends will be added to the database
  */
 function whatsTrending () {
-  console.log ( 'Finding what is trending' )
+  'use strict';
 
   var bearer = TwitterTokens.findOne( { 
     date_created : { 
@@ -181,6 +198,8 @@ function whatsTrending () {
  * @return String or Array
  */
 function search ( searchTerm ) {
+  'use strict';
+
   // Terminate early
   if ( searchTerm == null ||
        searchTerm.trim() === '' ) {
@@ -201,12 +220,12 @@ function search ( searchTerm ) {
     date_created : Date.now()
   } }, function () { /* force async */ } )
 
-  var search = _$.Twitter.urls.search + encodeURIComponent ( '"' + searchTerm + '"' )
+  var searchUrl = _$.Twitter.urls.search + encodeURIComponent ( '"' + searchTerm + '"' )
 
   var bearer = getBearer ()
 
   try {
-    var statuses = getStatuses( bearer, search, NUMBER_OF_TWEETS )
+    var statuses = getStatuses( bearer, searchUrl, NUMBER_OF_TWEETS )
     var counts = {};
 
     // Tally and insert into the database
@@ -230,8 +249,8 @@ function search ( searchTerm ) {
     } )
 
     // Transform counts into an array
-    topUsers = []
-    topCount = -1
+    var topUsers = []
+    var topCount = -1
 
     for ( var prop in counts ) {
       if ( counts.hasOwnProperty(prop) ) {
@@ -247,6 +266,8 @@ function search ( searchTerm ) {
 
     // Sort tallies
     function tallyCompare ( a, b ) {
+      'use strict';
+
       if (a.count < b.count)
          return 1;
       if (a.count > b.count)
@@ -269,7 +290,6 @@ function search ( searchTerm ) {
     return topUsers
 
   } catch ( error ) {
-    console.log ( error )
     Logger.insert ( {
       error : error
     } )
@@ -288,6 +308,8 @@ function search ( searchTerm ) {
  * currently trending, then set up 15 minute intervals for each. 
  */
 Meteor.startup(function () {
+  'use strict';
+
   _$.requestBuffer = new CBuffer( REQUEST_LIMIT )
 
   Meteor.methods( {

@@ -4,6 +4,14 @@
  * Shared between the client and server
  * ===================================== */
 /* global Meteor */
+/* global TwitterTokens */
+/* global TwitterTrends */
+/* global TwitterTweets */
+/* global TwitterUsers */
+/* global Searches */
+/* global Logger */
+
+'use strict';
 
 TwitterTokens = new Meteor.Collection( 'twitter_tokens' );
 TwitterTrends = new Meteor.Collection( 'twitter_trends' );
