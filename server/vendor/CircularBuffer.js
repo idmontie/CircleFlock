@@ -15,18 +15,23 @@ var _$ = this;
   'use strict';
 
   _$.CBuffer = function () {
+
       // handle cases where "new" keyword wasn't used
       if ( ! ( this instanceof _$.CBuffer ) ) {
           // multiple conditions need to be checked to properly emulate Array
-          if (arguments.length > 1 || typeof arguments[0] !== 'number') {
-              return _$.CBuffer.apply(new _$.CBuffer(arguments.length), arguments);
+          if ( arguments.length > 1 || 
+               typeof arguments[0] !== 'number' ) {
+              return _$.CBuffer.apply( new _$.CBuffer( arguments.length ), arguments );
           } else {
-              return new _$.CBuffer(arguments[0]);
+              return new _$.CBuffer( arguments[0] );
           }
       }
+
       // if no arguments, then nothing needs to be set
-      if (arguments.length === 0)
-      throw new Error('Missing Argument: You must pass a valid buffer length');
+      if ( arguments.length === 0 ) {
+        throw new Error('Missing Argument: You must pass a valid buffer length');
+      }
+
       // this is the same in either scenario
       this.size = this.start = 0;
       // set to callback fn if data is about to be overwritten
@@ -56,12 +61,18 @@ var _$ = this;
       // pop last item
       pop : function () {
           var item;
-          if (this.size === 0) return;
+          if ( this.size === 0 ) {
+            return;
+          }
+
           item = this.data[this.end];
+
           // remove the reference to the object so it can be garbage collected
           delete this.data[this.end];
+          
           this.end = (this.end - 1 + this.length) % this.length;
           this.size--;
+          
           return item;
       },
       // push item to the end
@@ -93,25 +104,45 @@ var _$ = this;
       },
       // reverse order of the buffer
       reverse : function () {
-          var i = 0,
-              tmp;
-          for (; i < ~~(this.size / 2); i++) {
+          var i = 0;
+          var tmp;
+          var size = this.size / 2;
+
+          if ( size < 0 ) {
+            size = Math.ceil( size );
+          } else {
+            size = Math.floor( size );
+          }
+
+          for (; i < size; i++) {
               tmp = this.data[(this.start + i) % this.length];
               this.data[(this.start + i) % this.length] = this.data[(this.start + (this.size - i - 1)) % this.length];
               this.data[(this.start + (this.size - i - 1)) % this.length] = tmp;
           }
           return this;
       },
-      // rotate buffer to the left by cntr, or by 1
+      /**
+       * rotate buffer to the left by cntr, or by 1
+       */
       rotateLeft : function (cntr) {
-          if (typeof cntr === 'undefined') cntr = 1;
-          if (typeof cntr !== 'number') throw new Error("Argument must be a number");
+          if (typeof cntr === 'undefined') {
+            cntr = 1;
+          }
+
+          if (typeof cntr !== 'number') {
+            throw new Error("Argument must be a number");
+          }
+
           while (--cntr >= 0) {
               this.push(this.shift());
           }
+
           return this;
       },
-      // rotate buffer to the right by cntr, or by 1
+      /**
+       * rotate buffer to the right by cntr, or by 1
+       * @param cntr the pivot point
+       */
       rotateRight : function (cntr) {
           if (typeof cntr === 'undefined') cntr = 1;
           if (typeof cntr !== 'number') throw new Error("Argument must be a number");
@@ -120,11 +151,17 @@ var _$ = this;
           }
           return this;
       },
-      // remove and return first item
+      /**
+       * remove and return first item
+       *
+       * @return last element
+       */
       shift : function () {
           var item;
           // check if there are any items in CBuff
-          if (this.size === 0) return;
+          if (this.size === 0) {
+            return;
+          }
           // store first item for return
           item = this.data[this.start];
           // recalculate start of CBuffer
@@ -133,14 +170,18 @@ var _$ = this;
           this.size--;
           return item;
       },
-      // sort items
-      sort : function (fn) {
-          this.data.sort(fn || defaultComparitor);
+      /**
+       * sort items
+       */
+      sort : function ( fn ) {
+          this.data.sort( fn || defaultComparitor );
           this.start = 0;
           this.end = this.size - 1;
           return this;
       },
-      // add item to beginning of buffer
+      /**
+       * add item to beginning of buffer
+       */
       unshift : function () {
           var i = 0;
           // check if overflow is set, and if data is about to be overwritten
@@ -158,8 +199,11 @@ var _$ = this;
               if (this.end < 0) this.end = this.length + (this.end % this.length);
           }
           if (this.size < this.length) {
-              if (this.size + i > this.length) this.size = this.length;
-              else this.size += i;
+              if (this.size + i > this.length) {
+                this.size = this.length;
+              } else {
+                this.size += i;
+              }
           }
           this.start -= arguments.length;
           if (this.start < 0) this.start = this.length + (this.start % this.length);
