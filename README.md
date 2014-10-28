@@ -1,6 +1,8 @@
 Circle Flock
 ============
 
+[![Code Climate](https://codeclimate.com/github/idmontie/Circle-Flock/badges/gpa.svg)](https://codeclimate.com/github/idmontie/Circle-Flock)
+
 A dynamic [Meteor](https://www.meteor.com/main) based project that helps users find other users to follow.
 
 Currently only supports Twitter.
