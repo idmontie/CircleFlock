@@ -10,6 +10,6 @@
     "grunt-jscs": "~0.8.0"
   },
   "scripts" : {
-    "test": "grunt"
+    "test": "grunt --gruntfile .Gruntfile.js"
   }
 }
